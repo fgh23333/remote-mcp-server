@@ -28,6 +28,12 @@
 			"id": "75d4a50a09db4f9cadcf81aa9dcaf1a9"
 		}
 	],
+	"r2_buckets": [
+		{
+			"binding": "DATASET",
+			"bucket_name": "mcp"
+		}
+	],
 	"observability": {
 		"enabled": true
 	},

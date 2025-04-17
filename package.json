@@ -21,6 +21,7 @@
 		"@modelcontextprotocol/sdk": "^1.7.0",
 		"agents": "^0.0.53",
 		"hono": "^4.7.4",
+		"remote-mcp-server": "file:",
 		"zod": "^3.24.2"
 	}
 }
