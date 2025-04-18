@@ -79,10 +79,12 @@ export class MyMCP extends McpAgent<Env> {
                     }
 
                     // 直接返回读取到的 JSON 数据的前 5 条，用于测试
-                    const firstFewQuestions = questionsData.slice(0, 5).map(item => ({
-                        type: "text",
-                        text: item.question || String(item),
-                    }));
+                    // const firstFewQuestions = questionsData.slice(0, 5).map(item => ({
+                    //     type: "text",
+                    //     text: item.question || String(item),
+                    // }));
+
+                    const firstFewQuestions = questionsData.slice(0, 5)
 
                     return { content: firstFewQuestions };
 
