@@ -16,7 +16,7 @@ interface Env {
     // 其他环境变量可以添加到这里
 }
 
-export class MyMCP extends McpAgent {
+export class MyMCP extends McpAgent<Env> {
     server = new McpServer({
         name: "Demo",
         version: "1.0.0",
