@@ -25,13 +25,13 @@
 	"kv_namespaces": [
 		{
 			"binding": "OAUTH_KV",
-			"id": "75d4a50a09db4f9cadcf81aa9dcaf1a9"
+			"id": "75d4a50a09db4f9cadcf81aa9dcaf1a9",
 		}
 	],
 	"r2_buckets": [
 		{
 			"binding": "DATASET",
-			"bucket_name": "mcp"
+			"bucket_name": "mcp",
 		}
 	],
 	"observability": {
