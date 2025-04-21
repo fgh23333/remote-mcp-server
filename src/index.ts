@@ -32,8 +32,9 @@ export class MyMCP extends McpAgent<Env> {
             "generate",
             {
                 filename: z.string().optional().default("CCPH_subject.json"), // 默认读取 CCPH_subject.json 文件
+                count: z.number().optional().default(30),
             },
-            async ({ filename }) => {
+            async ({ filename, count }) => {
                 try {
                     // 确保 env 存在，并且 env 中包含你的存储桶 DATASET
                     if (!this.env || !this.env.DATASET) {
@@ -78,15 +79,39 @@ export class MyMCP extends McpAgent<Env> {
                         };
                     }
 
-                    // 直接返回读取到的 JSON 数据的前 5 条，用于测试
-                    // const firstFewQuestions = questionsData.slice(0, 5).map(item => ({
-                    //     type: "text",
-                    //     text: item.question || String(item),
-                    // }));
+                    const numQuestionsToGenerate = Math.min(count, questionsData.length); // 确保不会抽取超过总数的题目
 
-                    const firstFewQuestions = questionsData.slice(0, 5)
+                    // 创建一个副本，进行洗牌，然后取出前 numQuestionsToGenerate 个元素
+                    const shuffledQuestions = [...questionsData]; // 创建数组副本
 
-                    return { content: firstFewQuestions };
+                    // 实现 Fisher-Yates (Knuth) 洗牌算法
+                    for (let i = shuffledQuestions.length - 1; i > 0; i--) {
+                        const j = Math.floor(Math.random() * (i + 1));
+                        [shuffledQuestions[i], shuffledQuestions[j]] = [shuffledQuestions[j], shuffledQuestions[i]]; // 交换元素
+                    }
+
+                    const selectedQuestions = shuffledQuestions.slice(0, numQuestionsToGenerate);
+
+                    const formattedContent = selectedQuestions.map(item => {
+                        try {
+                            // 将每个对象转换为 JSON 字符串
+                            return {
+                                type: "text",
+                                text: JSON.stringify(item, null, 2), // 使用 JSON.stringify 并格式化输出
+                            };
+                        } catch (stringifyError) {
+                            // 如果对象无法被 JSON.stringify 转换
+                            console.error("将对象转换为 JSON 字符串失败:", stringifyError, item);
+                            return {
+                                type: "error",
+                                error: `无法处理题目对象: ${stringifyError.message}`,
+                            };
+                        }
+                    });
+
+                    // const firstFewQuestions = questionsData.slice(0, 5)
+
+                    return { content: formattedContent };
 
                 } catch (error) {
                     console.error("生成题目时发生错误:", error);
